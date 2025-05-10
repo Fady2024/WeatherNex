@@ -67,7 +67,7 @@
                         android:id="@+id/textMaxTempUnit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="°C"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:layout_marginStart="2dp"/>
@@ -93,7 +93,7 @@
                         android:id="@+id/textMinTempUnit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="°C"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginStart="2dp"/>

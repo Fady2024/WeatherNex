@@ -108,7 +108,7 @@ class HourlyForecastAdapter : RecyclerView.Adapter<HourlyForecastAdapter.ViewHol
     }
     
     private fun getWeatherIconResource(conditions: String): Int {
-        val conditionsLower = conditions.toLowerCase()
+        val conditionsLower = conditions.lowercase()
         return when {
             conditionsLower.contains("rain") && conditionsLower.contains("thunder") ->
                 R.drawable.icon_weather_thunderstorm_cloud

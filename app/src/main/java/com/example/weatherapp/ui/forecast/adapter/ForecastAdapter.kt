@@ -40,6 +40,8 @@ class ForecastAdapter : ListAdapter<ForecastData, ForecastAdapter.ForecastViewHo
         private val snowText: TextView = itemView.findViewById(R.id.textViewSnow)
         private val maxTempText: TextView = itemView.findViewById(R.id.textViewMaxTemp)
         private val minTempText: TextView = itemView.findViewById(R.id.textViewMinTemp)
+        private val maxTempUnitText: TextView = itemView.findViewById(R.id.textMaxTempUnit)
+        private val minTempUnitText: TextView = itemView.findViewById(R.id.textMinTempUnit)
         private val weatherIcon: ImageView = itemView.findViewById(R.id.imageViewWeather)
 
         @RequiresApi(Build.VERSION_CODES.O)
@@ -59,8 +61,12 @@ class ForecastAdapter : ListAdapter<ForecastData, ForecastAdapter.ForecastViewHo
                 snowText.text = "${snowAmount}%"
                 val highTemp = Settings.temperatureUnit.convert(forecast.highTemp).toInt()
                 val lowTemp = Settings.temperatureUnit.convert(forecast.lowTemp).toInt()
-                maxTempText.text = "${highTemp}°${if (Settings.temperatureUnit == Settings.TemperatureUnit.CELSIUS) "C" else "F"}"
-                minTempText.text = "${lowTemp}°${if (Settings.temperatureUnit == Settings.TemperatureUnit.CELSIUS) "C" else "F"}"
+                maxTempText.text = "${highTemp}"
+                minTempText.text = "${lowTemp}"
+                val unitSymbol = if (Settings.temperatureUnit == Settings.TemperatureUnit.CELSIUS) "°C" else "°F"
+                maxTempUnitText.text = unitSymbol
+                minTempUnitText.text = unitSymbol
+                
                 weatherIcon.setImageResource(getWeatherIconResource(forecast.conditions))
                 
             } catch (e: Exception) {
@@ -70,7 +76,7 @@ class ForecastAdapter : ListAdapter<ForecastData, ForecastAdapter.ForecastViewHo
 
         @SuppressLint("DefaultLocale")
         private fun getWeatherIconResource(conditions: String): Int {
-            val conditionsLower = conditions.toLowerCase()
+            val conditionsLower = conditions.lowercase()
             return when {
                 conditionsLower.contains("rain") && conditionsLower.contains("thunder") -> 
                     R.drawable.icon_weather_thunderstorm_cloud
