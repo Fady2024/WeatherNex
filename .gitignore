@@ -29,8 +29,6 @@ local.properties
 .navigation/
 output.json
 
-# Android Studio captures folder
-captures/
 
 # Keystore files
 *.jks
@@ -38,7 +36,6 @@ captures/
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
-.cxx/
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
@@ -57,10 +54,6 @@ lint/tmp/
 
 # Kotlin
 .kotlin/
-
-# Environment files
-.env
-app/src/main/assets/.env
 
 # Log Files
 *.log
