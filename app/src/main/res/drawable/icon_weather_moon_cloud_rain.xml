@@ -1,0 +1,42 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="25">
+    <group>
+        <path
+            android:fillColor="#FFEB3B"
+            android:pathData="M21,12.79C20.44,12.93 19.86,13 19.25,13A7.25,7.25 0 0,1 12,5.75C12,5.14 12.07,4.56 12.21,4C8.82,4.79 6.25,7.91 6.25,11.5C6.25,15.64 9.61,19 13.75,19C17.34,19 20.46,16.43 21,13.04Z"/>
+    </group>
+    <group>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M8,15a4,4 0 0,1 8,0h1a3.5,3.5 0 1,1 0,7H7a3.5,3.5 0 1,1 1,-7z"/>
+    </group>
+    <group>
+        <!-- Scattered raindrops with random positions and lengths -->
+        <path
+            android:strokeColor="#2196F3"
+            android:strokeWidth="0.7"
+            android:strokeLineCap="round"
+            android:pathData="M7.8,19.2L7.4,20.4M15.6,19L15.2,20.2M11.3,19.5L10.9,20.7"/>
+            
+        <path
+            android:strokeColor="#2196F3"
+            android:strokeWidth="0.7"
+            android:strokeLineCap="round"
+            android:pathData="M9.5,20.8L9.1,22M13.8,20.3L13.4,21.5M16.2,20.6L15.8,21.8"/>
+            
+        <path
+            android:strokeColor="#2196F3"
+            android:strokeWidth="0.7"
+            android:strokeLineCap="round"
+            android:pathData="M8.3,21.7L7.9,22.9M12.4,21.2L12,22.4M16.5,21.4L16.1,22.6"/>
+            
+        <path
+            android:strokeColor="#2196F3"
+            android:strokeWidth="0.7"
+            android:strokeLineCap="round"
+            android:pathData="M10.7,22.5L10.3,23.7M14.6,22.8L14.2,24"/>
+    </group>
+</vector>

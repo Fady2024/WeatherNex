@@ -1,0 +1,145 @@
+<resources>
+    <string name="app_name">WeatherNex</string>
+
+    <string name="api_fetching_error">Something went wrong!\nDon\'t worry its not you, its us. Try later.</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="search_cities_button">Search Cities Button</string>
+    <string name="app_settings_button">App Settings Button</string>
+    <string name="atmospheric_pressure_icon">Atmospheric Pressure Icon</string>
+    <string name="back_button">Back Button</string>
+    <string name="next_5_days">Next 5 Days</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="weather_icon">Weather Icon</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pressure">Pressure</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="humidity">Humidity</string>
+    <string name="today">Today</string>
+    <string name="sunset_icon">Sunset icon</string>
+    <string name="sunrise_icon">Sunrise icon</string>
+    <string name="settings">Settings</string>
+    <string name="units">Units</string>
+    <string name="temperature_units">Temperature units</string>
+    <string name="wind_speed_units">Wind speed units</string>
+    <string name="hpa">hPa</string>
+    <string name="atm">atm</string>
+    <string name="atmospheric_pressure_units">Atmospheric pressure units</string>
+    <string name="meters_per_second">m/s</string>
+    <string name="kilometers_per_hour">km/h</string>
+    <string name="miles_per_hour">mph</string>
+    <string name="weather_music_desc">Music according to the weather.</string>
+    <string name="about_WeatherNex">About WeatherNex</string>
+    <string name="feedback">Feedback</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="credits">Credits</string>
+    <string name="other_settings">Other Settings</string>
+    <string name="weather_music">Weather music</string>
+    <string name="donate_us">Donate Us</string>
+    <string name="cancel">Cancel</string>
+    <string name="search_your_city">Search Your City</string>
+    <string name="add_remove_button">Add remove button</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="no_locations_found">No locations found</string>
+    <string name="loading">Loading…</string>
+    <string name="something_went_wrong">Something went wrong!</string>
+
+    <!-- Error Messages -->
+    <string name="error_network">No internet connection. Please check your network settings.</string>
+    <string name="error_server">Server error. Please try again later.</string>
+    <string name="error_location">Could not get your location. Please check location permissions.</string>
+    <string name="error_no_cache">No cached data available. Please connect to the internet.</string>
+    <string name="error_general">Something went wrong. Please try again.</string>
+    <string name="error_location_permission">Location permission is required to get weather for your current location.</string>
+    <string name="error_offline_search">Cannot search while offline.</string>
+    <string name="error_loading_weather">Error loading weather data.</string>
+    <string name="error_no_data">No data available. Using default location.</string>
+    <string name="error_offline_no_cache">No internet connection and no cached data available.</string>
+    <string name="error_invalid_location">Invalid location. Please try again.</string>
+    <string name="error_api">Weather service is currently unavailable.</string>
+    
+    <!-- Offline Banner -->
+    <string name="offline_banner">You are offline. Showing cached data.</string>
+    <string name="offline_banner_time">Showing cached data from %1$s</string>
+
+    <!-- Location -->
+    <string name="default_location">Cairo</string>
+    <string name="location_permission_denied">Location permission denied. Using default location.</string>
+    <string name="location_services_disabled">Location services are disabled</string>
+    <string name="enable_location_message">Please enable location services to get weather for your current location</string>
+    <string name="open_settings">Open Settings</string>
+
+    <!-- Weather Details -->
+    <string name="temperature_format">%1$d°</string>
+    <string name="humidity_format">%1$d%%</string>
+    <string name="wind_format">%1$.1f m/s</string>
+    <string name="pressure_format">%1$.1f hPa</string>
+    <string name="precipitation_format">Precipitation: %1$d%%</string>
+    <string name="feels_like">Feels like %1$s</string>
+    <string name="uv_index">UV Index: %1$d</string>
+    <string name="visibility">Visibility: %1$s</string>
+    <string name="cloud_cover">Cloud Cover: %1$d%%</string>
+
+    <!-- Forecast -->
+    <string name="forecast_title">5-Day Forecast</string>
+    <string name="high_low_format">H: %1$s L: %2$s</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="temperature_unit">Temperature Unit</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="wind_speed_unit">Wind Speed Unit</string>
+    <string name="kph">km/h</string>
+    <string name="mph">mph</string>
+    <string name="pressure_unit">Pressure Unit</string>
+    <string name="inhg">inHg</string>
+
+    <!-- Actions -->
+    <string name="action_refresh">Refresh</string>
+    <string name="action_search">Search location</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_back">Back</string>
+
+    <!-- Content Descriptions -->
+    <string name="desc_weather_icon">Weather condition icon</string>
+    <string name="desc_search_button">Search location button</string>
+    <string name="desc_settings_button">Settings button</string>
+    <string name="desc_back_button">Back button</string>
+    <string name="desc_forecast_button">View forecast button</string>
+    <string name="desc_location_icon">Location icon</string>
+
+    <!-- Splash Screen Strings -->
+    <string name="loading_weather">Loading weather data...</string>
+    <string name="loading_location">Getting your location...</string>
+    <string name="loading_cached_data">Loading cached weather data...</string>
+    <string name="getting_location_name">Resolving location name...</string>
+    <string name="loading_weather_for">Loading weather for %1$s...</string>
+    <string name="loading_forecast">Loading weather forecast...</string>
+    <string name="loading_error_using_cache">Error loading data. Using cached data...</string>
+    
+    <!-- Search Location Strings -->
+    <string name="current_location">Current Location</string>
+    <string name="search_locations">Search locations</string>
+    <string name="no_search_history">No search history</string>
+    <string name="clear_history">Clear history</string>
+
+    <!-- Offline Messages -->
+    <string name="offline_using_cached_data">You\'re offline. Showing cached weather data.</string>
+    <string name="error_using_cached_data">Error loading new data. Showing cached weather data.</string>
+
+</resources>

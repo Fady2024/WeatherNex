@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text appearance attributes that were part of Material Components -->
+    <attr name="textAppearanceHeadline1" format="reference" />
+    <attr name="textAppearanceHeadline2" format="reference" />
+    <attr name="textAppearanceBody1" format="reference" />
+    <attr name="textAppearanceBody2" format="reference" />
+    
+    <!-- Component style attributes that were part of Material Components -->
+    <attr name="materialCardViewStyle" format="reference" />
+    <attr name="materialButtonStyle" format="reference" />
+    <attr name="cornerRadius" format="dimension" />
+    <attr name="strokeWidth" format="dimension" />
+    
+    <!-- Color attributes that were part of Material Components -->
+    <attr name="colorPrimaryVariant" format="color" />
+    <attr name="colorOnPrimary" format="color" />
+    <attr name="colorSecondary" format="color" />
+    <attr name="colorSecondaryVariant" format="color" />
+    <attr name="colorOnSecondary" format="color" />
+    <attr name="colorSurface" format="color" />
+    <attr name="colorOnSurface" format="color" />
+</resources> 
+ 
+ 
+ 
+ 
+ 

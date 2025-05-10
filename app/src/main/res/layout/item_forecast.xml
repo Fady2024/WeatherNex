@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="8dp">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@drawable/home_background">
+            
+            <!-- Day name -->
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monday"
+                android:textColor="@color/black"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+                
+            <!-- Temperature layout -->
+            <LinearLayout
+                android:id="@+id/tempLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:gravity="end"
+                android:layout_marginEnd="4dp">
+                
+                <!-- High temp -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/rounded_temp_background"
+                    android:padding="8dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:elevation="4dp"
+                    android:layout_marginBottom="6dp">
+                    
+                    <TextView
+                        android:id="@+id/textViewMaxTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="28"
+                        android:textColor="@color/black"
+                        android:textSize="36sp"
+                        android:textStyle="bold"/>
+                    
+                    <TextView
+                        android:id="@+id/textMaxTempUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="°C"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:layout_marginStart="2dp"/>
+                </LinearLayout>
+                
+                <!-- Low temp -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="4dp"
+                    android:gravity="center">
+                    
+                    <TextView
+                        android:id="@+id/textViewMinTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"/>
+                    
+                    <TextView
+                        android:id="@+id/textMinTempUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="°C"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="2dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            
+            <!-- Weather icon - Moved to the right of condition text -->
+            <ImageView
+                android:id="@+id/imageViewWeather"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/icon_weather_cloud"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewDate"
+                android:layout_marginTop="12dp"/>
+            
+            <!-- Weather type (short) - Moved to end after icon -->
+            <TextView
+                android:id="@+id/textViewConditions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Cloudy"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/imageViewWeather"
+                app:layout_constraintEnd_toStartOf="@id/tempLayout"
+                app:layout_constraintTop_toTopOf="@id/imageViewWeather"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"/>
+
+            <!-- Weather description (detailed) -->
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Partly cloudy throughout the day with rain"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:maxLines="3"
+                android:ellipsize="none"
+                android:lineSpacingMultiplier="0.9"
+                app:layout_constraintStart_toStartOf="@id/textViewConditions"
+                app:layout_constraintEnd_toStartOf="@id/tempLayout"
+                app:layout_constraintTop_toBottomOf="@id/textViewConditions"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    
+        <!-- Weather details container -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/weatherDetailsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp"
+            android:backgroundTint="#333333">
+            
+            <LinearLayout
+                android:id="@+id/weatherDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:gravity="center">
+                
+                <!-- Humidity -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💧"
+                        android:textSize="32sp"/>
+                        
+                    <TextView
+                        android:id="@+id/textViewHumidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="85%"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+                    
+                <!-- Wind -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💨"
+                        android:textSize="32sp"/>
+                        
+                    <TextView
+                        android:id="@+id/textViewWind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12 km/h"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+                
+                <!-- Precipitation -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🌧️"
+                        android:textSize="32sp"/>
+                        
+                    <TextView
+                        android:id="@+id/textViewPrecipitation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30%"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+                
+                <!-- Snow -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="❄️"
+                        android:textSize="32sp"/>
+                        
+                    <TextView
+                        android:id="@+id/textViewSnow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</androidx.cardview.widget.CardView> 

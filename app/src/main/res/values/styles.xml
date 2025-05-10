@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text Styles -->
+    <style name="TextAppearance.Weather.Headline1" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TextAppearance.Weather.Headline2" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.Weather.Body1" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.Weather.Body2" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <!-- Card Styles -->
+    <style name="CardView.Weather" parent="CardView">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="contentPadding">16dp</item>
+        <item name="cardBackgroundColor">@color/card_background</item>
+    </style>
+
+    <!-- Button Styles -->
+    <style name="Button.Weather" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <!-- Icon Button Styles -->
+    <style name="IconButton.Weather" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/icon_button_background</item>
+        <item name="cornerRadius">24dp</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <!-- Error Text Style -->
+    <style name="TextAppearance.Weather.Error" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/error</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <!-- Offline Banner Style -->
+    <style name="Banner.Offline" parent="TextAppearance.AppCompat.Small">
+        <item name="android:background">@color/offline_banner_background</item>
+        <item name="android:textColor">@color/offline_banner_text</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- Common Dimensions -->
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_size_large">48dp</dimen>
+
+    <style name="DropdownAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_down</item>
+        <item name="android:windowExitAnimation">@anim/slide_up</item>
+    </style>
+</resources> 
+ 
+ 
+ 
+ 
+ 

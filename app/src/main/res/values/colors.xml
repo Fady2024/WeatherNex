@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Theme Colors -->
+    <color name="primary">#1E88E5</color>
+    <color name="primary_dark">#1565C0</color>
+    <color name="primary_light">#64B5F6</color>
+    <color name="accent">#FF9800</color>
+
+    <!-- Standard Colors -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_light">#BDBDBD</color>
+
+    <!-- Background Colors -->
+    <color name="background">#FAFAFA</color>
+    <color name="background_dark">#121212</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+
+    <!-- Status Colors -->
+    <color name="error">#D32F2F</color>
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FFC107</color>
+
+    <!-- Weather Card Colors - Enhanced -->
+    <color name="weather_card_day">#2196F3</color>
+    <color name="weather_card_day_gradient_start">#42A5F5</color>
+    <color name="weather_card_day_gradient_end">#1976D2</color>
+    
+    <color name="weather_card_night">#1A237E</color>
+    <color name="weather_card_night_gradient_start">#303F9F</color>
+    <color name="weather_card_night_gradient_end">#0D47A1</color>
+    
+    <color name="weather_card_cloudy">#607D8B</color>
+    <color name="weather_card_cloudy_gradient_start">#78909C</color>
+    <color name="weather_card_cloudy_gradient_end">#455A64</color>
+    
+    <color name="weather_card_rainy">#455A64</color>
+    <color name="weather_card_rainy_gradient_start">#546E7A</color>
+    <color name="weather_card_rainy_gradient_end">#263238</color>
+    
+    <color name="weather_card_sunny">#FF9800</color>
+    <color name="weather_card_sunny_gradient_start">#FFB74D</color>
+    <color name="weather_card_sunny_gradient_end">#F57C00</color>
+
+    <!-- Divider and Border Colors -->
+    <color name="divider">#BDBDBD</color>
+    <color name="border_light">#E0E0E0</color>
+
+    <!-- Offline Banner Colors -->
+    <color name="offline_banner_background">#424242</color>
+    <color name="offline_banner_text">#FFFFFF</color>
+
+    <!-- Search Screen Colors -->
+    <color name="light_gray">#F5F5F5</color>
+    <color name="gray">#757575</color>
+    
+    <!-- Additional Material Colors -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    
+    <!-- Other Application Colors -->
+    <color name="textColor">#263238</color>
+    <color name="upcomingTimeColor">#78909C</color>
+    <color name="placeholderColor">#607D8B</color>
+    <color name="unselectedIndicatorColor">#FFB74D</color>
+    <color name="indicatorSeparatorColor">#FFA726</color>
+    
+    <!-- Weather Icon Colors - New -->
+    <color name="icon_sun_color">#FFD700</color>
+    <color name="icon_sun_center">#FFAB00</color>
+    <color name="icon_cloud_color">#F8F8FF</color>
+    <color name="icon_cloud_shadow">#6D8EAF</color>
+    <color name="icon_rain_color">#64B5F6</color>
+    <color name="icon_snow_color">#E1F5FE</color>
+</resources>
