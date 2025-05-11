@@ -26,6 +26,20 @@
     <color name="error">#D32F2F</color>
     <color name="success">#4CAF50</color>
     <color name="warning">#FFC107</color>
+    
+    <!-- Status Bar Colors -->
+    <color name="status_bar_day_clear">#65B0E7</color>
+    <color name="status_bar_night_clear">#0F1A4A</color>
+    <color name="status_bar_day_cloudy">#BBD0E5</color>
+    <color name="status_bar_night_cloudy">#35404D</color>
+    <color name="status_bar_day_rainy">#87A1B5</color>
+    <color name="status_bar_night_rainy">#2A3A47</color>
+    <color name="status_bar_day_snowy">#E9F5FB</color>
+    <color name="status_bar_night_snowy">#A1BDDA</color>
+    <color name="status_bar_day_thunderstorm">#4E5D6C</color>
+    <color name="status_bar_night_thunderstorm">#1F2733</color>
+    <color name="status_bar_day_foggy">#D6DCE4</color>
+    <color name="status_bar_night_foggy">#5D6773</color>
 
     <!-- Weather Card Colors - Enhanced -->
     <color name="weather_card_day">#2196F3</color>
@@ -81,4 +95,21 @@
     <color name="icon_cloud_shadow">#6D8EAF</color>
     <color name="icon_rain_color">#64B5F6</color>
     <color name="icon_snow_color">#E1F5FE</color>
+
+    <!-- Weather condition colors -->
+    <color name="coldWeatherOverlay">#33B3E5FC</color>
+    <color name="hotWeatherOverlay">#33FFB74D</color>
+    <color name="rainyWeatherOverlay">#33607D8B</color>
+    <color name="cloudyWeatherOverlay">#33B0BEC5</color>
+    <color name="clearWeatherOverlay">#33FFEB3B</color>
+    <color name="thunderstormWeatherOverlay">#334E5D6C</color>
+    <color name="foggyWeatherOverlay">#33D6DCE4</color>
+    
+    <!-- Day/Night Theme Colors -->
+    <color name="textColorDay">#212121</color>
+    <color name="textColorNight">#F5F5F5</color>
+    
+    <!-- Other UI elements -->
+    <color name="transparent">#00000000</color>
+    <color name="offlineWarning">#FFA000</color>
 </resources>
