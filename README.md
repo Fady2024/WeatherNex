@@ -1,6 +1,8 @@
 # WeatherNex: Modern Weather App for Android 🌦️
 
-<img src="assets/weather_logo.png" width="120" alt="WeatherNex Logo" align="right"/>
+<p align="right">
+  <img src="assets/weather_logo.png" width="100" alt="WeatherNex Logo">
+</p>
 
 ## 📋 Table of Contents
 
@@ -9,10 +11,10 @@
 3. [Features](#-features)
 4. [Technical Architecture](#-technical-architecture)
 5. [Project Structure & Components](#-project-structure--components)
-6. [Technology Stack](#-technology-stack)
+6. [Technology Stack](#️-technology-stack)
 7. [Data Flow](#-data-flow)
 8. [Testing Guide](#-testing-guide)
-9. [Installation](#-installation)
+9. [Installation](#️-installation)
 10. [Core Components](#-core-components)
 11. [Future Enhancements](#-future-enhancements)
 12. [License & Credits](#-license)
