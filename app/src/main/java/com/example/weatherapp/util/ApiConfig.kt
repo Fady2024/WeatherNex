@@ -8,10 +8,7 @@ import android.util.Log
  */
 object ApiConfig {
     private const val TAG = "ApiConfig"
-    
-    // Note: Best security practice is not to hardcode the API key in the source code
-    // but we're using this method for simplicity
-    private const val API_KEY = "U5WXPBRLBQH5BT77ER9Q73MN8"
+    private const val API_KEY = "7PZTY7HUKSMG38ZEZR34CDX3V"
     
     private var initialized = false
     
