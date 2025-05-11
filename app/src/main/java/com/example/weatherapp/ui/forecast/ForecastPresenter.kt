@@ -2,11 +2,10 @@ package com.example.weatherapp.ui.forecast
 
 import android.os.Handler
 import android.os.Looper
-import com.example.weatherapp.model.ForecastResponse
 import com.example.weatherapp.network.WeatherRepository
 import com.example.weatherapp.util.CacheManager
 import com.example.weatherapp.util.NetworkManager
-import java.lang.Exception
+import com.example.weatherapp.util.Settings
 
 class ForecastPresenter(
     private val weatherRepository: WeatherRepository,
@@ -17,9 +16,20 @@ class ForecastPresenter(
     private var view: ForecastContract.View? = null
     private var currentLocation: String? = null
     private val mainHandler = Handler(Looper.getMainLooper())
+    private var lastTemperatureUnit: Settings.TemperatureUnit = Settings.temperatureUnit
+    private var lastWindSpeedUnit: Settings.WindSpeedUnit = Settings.windSpeedUnit
+    private var lastPressureUnit: Settings.PressureUnit = Settings.pressureUnit
+    private var lastLengthUnit: Settings.LengthUnit = Settings.lengthUnit
+    private var lastTimeFormat: Boolean = Settings.use24HourFormat
 
     override fun attachView(view: ForecastContract.View) {
         this.view = view
+        
+        lastTemperatureUnit = Settings.temperatureUnit
+        lastWindSpeedUnit = Settings.windSpeedUnit
+        lastPressureUnit = Settings.pressureUnit
+        lastLengthUnit = Settings.lengthUnit
+        lastTimeFormat = Settings.use24HourFormat
     }
 
     override fun detachView() {
@@ -27,6 +37,29 @@ class ForecastPresenter(
     }
 
     override fun isViewAttached(): Boolean = view != null
+    
+    /**
+     * Checks if any settings have changed since last time
+     * @return true if settings have changed
+     */
+    fun haveSettingsChanged(): Boolean {
+        return lastTemperatureUnit != Settings.temperatureUnit ||
+               lastWindSpeedUnit != Settings.windSpeedUnit ||
+               lastPressureUnit != Settings.pressureUnit ||
+               lastLengthUnit != Settings.lengthUnit ||
+               lastTimeFormat != Settings.use24HourFormat
+    }
+    
+    /**
+     * Updates tracked settings to current values
+     */
+    fun updateTrackedSettings() {
+        lastTemperatureUnit = Settings.temperatureUnit
+        lastWindSpeedUnit = Settings.windSpeedUnit
+        lastPressureUnit = Settings.pressureUnit
+        lastLengthUnit = Settings.lengthUnit
+        lastTimeFormat = Settings.use24HourFormat
+    }
 
     override fun loadForecastData(location: String?) {
         currentLocation = location
