@@ -75,13 +75,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/temperatureUnitSelector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="72dp"
                     android:padding="16dp"
                     android:foreground="?attr/selectableItemBackground"
                     android:onClick="onTemperatureUnitClick">
@@ -91,7 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="🌡️"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -101,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:text="Temperature units"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:layout_marginStart="16dp"
                         app:layout_constraintStart_toEndOf="@id/iconTemperature"
                         app:layout_constraintTop_toTopOf="parent"
@@ -114,8 +115,10 @@
                         android:layout_height="wrap_content"
                         android:text="°C"
                         android:textColor="#4CAF50"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
+                        android:minWidth="48dp"
+                        android:gravity="end"
                         app:layout_constraintEnd_toStartOf="@id/iconTemperatureDropdown"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -138,13 +141,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/windSpeedUnitSelector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="72dp"
                     android:padding="16dp"
                     android:foreground="?attr/selectableItemBackground"
                     android:onClick="onWindSpeedUnitClick">
@@ -154,7 +158,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="💨"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -164,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:text="Wind speed units"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:layout_marginStart="16dp"
                         app:layout_constraintStart_toEndOf="@id/iconWind"
                         app:layout_constraintTop_toTopOf="parent"
@@ -177,8 +181,10 @@
                         android:layout_height="wrap_content"
                         android:text="m/s"
                         android:textColor="#2196F3"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
+                        android:minWidth="48dp"
+                        android:gravity="end"
                         app:layout_constraintEnd_toStartOf="@id/iconWindSpeedDropdown"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -201,13 +207,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/pressureUnitSelector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="72dp"
                     android:padding="16dp"
                     android:foreground="?attr/selectableItemBackground"
                     android:onClick="onPressureUnitClick">
@@ -217,7 +224,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="📊"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -227,7 +234,7 @@
                         android:layout_height="wrap_content"
                         android:text="Atmospheric pressure units"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:layout_marginStart="16dp"
                         app:layout_constraintStart_toEndOf="@id/iconPressure"
                         app:layout_constraintTop_toTopOf="parent"
@@ -240,8 +247,10 @@
                         android:layout_height="wrap_content"
                         android:text="atm"
                         android:textColor="#FF9800"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
+                        android:minWidth="48dp"
+                        android:gravity="end"
                         app:layout_constraintEnd_toStartOf="@id/iconPressureDropdown"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -256,6 +265,72 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:tint="#FF9800"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Length Units -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/lengthUnitSelector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="72dp"
+                    android:padding="16dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:onClick="onLengthUnitClick">
+
+                    <TextView
+                        android:id="@+id/iconLength"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📏"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Length units (snow depth)"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintStart_toEndOf="@id/iconLength"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/textLengthUnit"/>
+
+                    <TextView
+                        android:id="@+id/textLengthUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="mm"
+                        android:textColor="#9C27B0"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:minWidth="48dp"
+                        android:gravity="end"
+                        app:layout_constraintEnd_toStartOf="@id/iconLengthDropdown"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="8dp"/>
+
+                    <ImageView
+                        android:id="@+id/iconLengthDropdown"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/icon_dropdown"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:tint="#9C27B0"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
