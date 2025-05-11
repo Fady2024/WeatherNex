@@ -1,5 +1,6 @@
 package com.example.weatherapp.util
 
+import android.annotation.SuppressLint
 import com.example.weatherapp.model.WeatherData
 import com.example.weatherapp.model.ForecastData
 import com.example.weatherapp.model.ForecastResponse
@@ -35,16 +36,19 @@ class WeatherApi {
         
         private const val BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline"
 
+        @SuppressLint("NewApi")
         fun fetchWeather(location: String): String {
             val encodedLocation = URLEncoder.encode(location, "UTF-8")
             val today = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
             val apiKey = getApiKey()
-            val urlString = "$BASE_URL/$encodedLocation/$today/$today?key=$apiKey&include=days,hours,current&elements=datetime,temp,humidity,windspeed,winddir,windgust,feelslike,uvindex,pressure,visibility,cloudcover,conditions,description,icon,sunrise,sunset,moonphase,dew,precip,precipprob,precipcover,preciptype,snow,snowdepth,solarradiation,solarenergy,stations,source"
+            
+            val urlString = "$BASE_URL/$encodedLocation/$today/$today?key=$apiKey&include=days,hours,current&unitGroup=metric&elements=datetime,temp,humidity,windspeed,winddir,windgust,feelslike,uvindex,pressure,visibility,cloudcover,conditions,description,icon,sunrise,sunset,moonphase,dew,precip,precipprob,precipcover,preciptype,snow,snowdepth,solarradiation,solarenergy,stations,source,tempmin,tempmax,feelslikemin,feelslikemax"
             
             Log.d(TAG, "Fetching weather for: $location on $today")
             return makeApiRequest(urlString)
         }
 
+        @SuppressLint("NewApi")
         fun fetchForecast(location: String): String {
             val encodedLocation = URLEncoder.encode(location, "UTF-8")
             val today = LocalDate.now()
@@ -53,9 +57,11 @@ class WeatherApi {
             val dateFormat = DateTimeFormatter.ISO_LOCAL_DATE
             val apiKey = getApiKey()
             
-            val urlString = "$BASE_URL/$encodedLocation/${tomorrow.format(dateFormat)}/${endDate.format(dateFormat)}?key=$apiKey&include=days"
+            val unitGroup = if (Settings.temperatureUnit == Settings.TemperatureUnit.CELSIUS) "metric" else "us"
             
-            Log.d(TAG, "Fetching forecast for: $location")
+            val urlString = "$BASE_URL/$encodedLocation/${tomorrow.format(dateFormat)}/${endDate.format(dateFormat)}?key=$apiKey&include=days&unitGroup=$unitGroup"
+            
+            Log.d(TAG, "Fetching forecast for: $location with unitGroup: $unitGroup")
             return makeApiRequest(urlString)
         }
 
@@ -120,6 +126,7 @@ class WeatherApi {
             }
         }
 
+        @SuppressLint("NewApi")
         fun parseWeatherData(jsonString: String): WeatherData {
             try {
                 val jsonObject = JSONObject(jsonString)
@@ -131,42 +138,146 @@ class WeatherApi {
                 
                 val today = jsonObject.getJSONArray("days").getJSONObject(0)
                 
-                val temperature = today.optDouble("temp", 0.0)
-                val conditions = today.optString("conditions", "Unknown")
-                val humidity = today.optInt("humidity", 0)
-                val windSpeed = today.optDouble("windspeed", 0.0)
-                val feelsLike = today.optDouble("feelslike", 0.0)
-                val uvIndex = today.optInt("uvindex", 0)
-                val pressure = today.optDouble("pressure", 0.0)
-                val visibility = today.optDouble("visibility", 0.0)
-                val cloudCover = today.optInt("cloudcover", 0)
-                val datetime = today.optString("datetime", "")
-                val location = jsonObject.optString("resolvedAddress", "Unknown Location")
+                saveResponseDataForDebugging(jsonString)
                 
-                val dewPoint = today.optDouble("dew", 0.0)
-                val precipAmount = today.optDouble("precip", 0.0)
-                val precipProbability = today.optInt("precipprob", 0)
-                val precipCover = today.optInt("precipcover", 0)
-                val precipType = today.optString("preciptype", "")
-                val snow = today.optInt("snow", 0)
-                val snowDepth = today.optDouble("snowdepth", 0.0)
-                val windGust = today.optDouble("windgust", 0.0)
-                val windDirection = today.optInt("winddir", 0)
+                val location = jsonObject.optString("resolvedAddress", "Unknown Location")
+                val datetime = today.optString("datetime", "")
+                val minTemperature = today.optDouble("tempmin", 0.0)
+                val maxTemperature = today.optDouble("tempmax", 0.0)
+                val feelsLikeMax = today.optDouble("feelslikemax", 0.0)
+                val feelsLikeMin = today.optDouble("feelslikemin", 0.0)
                 val sunrise = today.optString("sunrise", "")
                 val sunset = today.optString("sunset", "")
-                val solarRadiation = today.optDouble("solarradiation", 0.0)
-                val solarEnergy = today.optDouble("solarenergy", 0.0)
                 val moonPhase = today.optDouble("moonphase", 0.0)
-                val icon = today.optString("icon", "")
+                val description = today.optString("description", "")
+                val precipCover = today.optInt("precipcover", 0)
                 val stations = today.optString("stations", "")
                 val source = today.optString("source", "")
-                val minTemperature = today.optDouble("tempmin", temperature * 0.8)
-                val maxTemperature = today.optDouble("tempmax", temperature * 1.2)
-                val feelsLikeMax = today.optDouble("feelslikemax", feelsLike)
-                val feelsLikeMin = today.optDouble("feelslikemin", feelsLike)
-                val description = today.optString("description", "")
+                var temperature = today.optDouble("temp", 0.0)
+                var conditions = today.optString("conditions", "Unknown")
+                var humidity = today.optInt("humidity", 0)
+                var windSpeed = today.optDouble("windspeed", 0.0)
+                var feelsLike = today.optDouble("feelslike", 0.0)
+                var uvIndex = today.optInt("uvindex", 0)
+                var pressure = today.optDouble("pressure", 0.0)
+                var visibility = today.optDouble("visibility", 0.0)
+                var cloudCover = today.optInt("cloudcover", 0)
+                var dewPoint = today.optDouble("dew", 0.0)
+                var precipAmount = today.optDouble("precip", 0.0)
+                var precipProbability = today.optInt("precipprob", 0)
+                var precipType = today.optString("preciptype", "")
+                var snow = today.optInt("snow", 0)
+                var snowDepth = today.optDouble("snowdepth", 0.0)
+                var windGust = today.optDouble("windgust", 0.0)
+                var windDirection = today.optInt("winddir", 0)
+                var solarRadiation = today.optDouble("solarradiation", 0.0)
+                var solarEnergy = today.optDouble("solarenergy", 0.0)
+                var icon = today.optString("icon", "")
+
+                if (jsonObject.has("currentConditions")) {
+                    val current = jsonObject.getJSONObject("currentConditions")
+                    Log.d(TAG, "Using currentConditions data as primary source for current weather")
+                    
+                    if (current.has("temp")) temperature = current.optDouble("temp")
+                    if (current.has("conditions")) conditions = current.optString("conditions")
+                    if (current.has("humidity")) humidity = current.optInt("humidity")
+                    if (current.has("windspeed")) windSpeed = current.optDouble("windspeed")
+                    if (current.has("winddir")) windDirection = current.optInt("winddir")
+                    if (current.has("windgust")) windGust = current.optDouble("windgust")
+                    if (current.has("feelslike")) feelsLike = current.optDouble("feelslike")
+                    if (current.has("uvindex")) uvIndex = current.optInt("uvindex")
+                    if (current.has("pressure")) pressure = current.optDouble("pressure")
+                    if (current.has("visibility")) visibility = current.optDouble("visibility")
+                    if (current.has("cloudcover")) cloudCover = current.optInt("cloudcover")
+                    if (current.has("dew")) dewPoint = current.optDouble("dew")
+                    if (current.has("precip")) precipAmount = current.optDouble("precip")
+                    if (current.has("precipprob")) precipProbability = current.optInt("precipprob")
+                    if (current.has("preciptype")) precipType = current.optString("preciptype")
+                    if (current.has("snow")) snow = current.optInt("snow")
+                    if (current.has("snowdepth")) snowDepth = current.optDouble("snowdepth")
+                    if (current.has("solarradiation")) solarRadiation = current.optDouble("solarradiation")
+                    if (current.has("solarenergy")) solarEnergy = current.optDouble("solarenergy")
+                    if (current.has("icon")) icon = current.optString("icon")
+                    
+                    Log.d(TAG, "CURRENT CONDITIONS - Time: ${current.optString("datetime")}, temp: ${temperature}°C, conditions: $conditions")
+                    Log.d(TAG, "CURRENT CONDITIONS - windspeed: $windSpeed km/h, visibility: $visibility km")
+                }
+                else if (today.has("hours")) {
+                    try {
+                        val hoursArray = today.getJSONArray("hours")
+                        val currentHour = LocalTime.now().hour
+                        var currentHourData: JSONObject? = null
+                        
+                        for (i in 0 until hoursArray.length()) {
+                            val hourData = hoursArray.getJSONObject(i)
+                            val hourTime = hourData.optString("datetime", "00:00:00")
+                            
+                            val hourValue = try {
+                                hourTime.split(":")[0].toInt()
+                            } catch (_: Exception) {
+                                continue
+                            }
+                            
+                            if (hourValue == currentHour) {
+                                currentHourData = hourData
+                                break
+                            }
+                        }
+                        
+                        if (currentHourData == null) {
+                            for (i in 0 until hoursArray.length()) {
+                                val hourData = hoursArray.getJSONObject(i)
+                                val hourTime = hourData.optString("datetime", "00:00:00")
+                                
+                                val hourValue = try {
+                                    hourTime.split(":")[0].toInt()
+                                } catch (_: Exception) {
+                                    continue
+                                }
+                                
+                                if (hourValue <= currentHour) {
+                                    currentHourData = hourData
+                                } else {
+                                    break
+                                }
+                            }
+                        }
+                        
+                        if (currentHourData != null) {
+                            Log.d(TAG, "Using hour data as fallback for hour $currentHour")
+                            
+                            if (currentHourData.has("temp")) temperature = currentHourData.optDouble("temp")
+                            if (currentHourData.has("conditions")) conditions = currentHourData.optString("conditions")
+                            if (currentHourData.has("humidity")) humidity = currentHourData.optInt("humidity")
+                            if (currentHourData.has("windspeed")) windSpeed = currentHourData.optDouble("windspeed")
+                            if (currentHourData.has("winddir")) windDirection = currentHourData.optInt("winddir")
+                            if (currentHourData.has("windgust")) windGust = currentHourData.optDouble("windgust")
+                            if (currentHourData.has("feelslike")) feelsLike = currentHourData.optDouble("feelslike")
+                            if (currentHourData.has("uvindex")) uvIndex = currentHourData.optInt("uvindex")
+                            if (currentHourData.has("pressure")) pressure = currentHourData.optDouble("pressure")
+                            if (currentHourData.has("visibility")) visibility = currentHourData.optDouble("visibility")
+                            if (currentHourData.has("cloudcover")) cloudCover = currentHourData.optInt("cloudcover")
+                            if (currentHourData.has("dew")) dewPoint = currentHourData.optDouble("dew")
+                            if (currentHourData.has("precip")) precipAmount = currentHourData.optDouble("precip")
+                            if (currentHourData.has("precipprob")) precipProbability = currentHourData.optInt("precipprob")
+                            if (currentHourData.has("preciptype")) precipType = currentHourData.optString("preciptype")
+                            if (currentHourData.has("snow")) snow = currentHourData.optInt("snow")
+                            if (currentHourData.has("snowdepth")) snowDepth = currentHourData.optDouble("snowdepth")
+                            if (currentHourData.has("solarradiation")) solarRadiation = currentHourData.optDouble("solarradiation")
+                            if (currentHourData.has("solarenergy")) solarEnergy = currentHourData.optDouble("solarenergy")
+                            if (currentHourData.has("icon")) icon = currentHourData.optString("icon")
+                            
+                            Log.d(TAG, "HOUR DATA - windspeed: $windSpeed km/h, visibility: $visibility km")
+                        } else {
+                            Log.d(TAG, "No matching hour data found for current hour ${currentHour}, using daily data")
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error processing hours data: ${e.message}")
+                    }
+                }
                 
-                Log.d(TAG, "Parsed weather data: $temperature°, $conditions")
+                Log.d(TAG, "Final parsed weather data: $temperature°C, $conditions, min/max: $minTemperature/$maxTemperature")
+                Log.d(TAG, "Detailed data: windspeed=$windSpeed km/h, visibility=$visibility km, pressure=$pressure mb")
                 
                 return WeatherData(
                     temperature = temperature,
@@ -223,7 +334,7 @@ class WeatherApi {
                 
                 val forecasts = mutableListOf<ForecastData>()
                 val startIdx = 0
-                val endIdx = Math.min(days.length(), startIdx + 5)
+                val endIdx = days.length().coerceAtMost(startIdx + 5)
                 
                 for (i in startIdx until endIdx) {
                     try {
@@ -258,6 +369,7 @@ class WeatherApi {
             }
         }
 
+        @SuppressLint("NewApi")
         fun parseHourlyForecastData(jsonResponse: String): List<HourlyForecastData> {
             try {
                 val json = JSONObject(jsonResponse)
@@ -279,12 +391,25 @@ class WeatherApi {
                     }
                     
                     val hours = today.getJSONArray("hours")
-                    val currentHour = LocalTime.now().hour
+                    
+                    var currentHour = LocalTime.now().hour
+                    var currentTime = ""
                     
                     if (json.has("currentConditions")) {
                         val current = json.getJSONObject("currentConditions")
+                        currentTime = current.optString("datetime", "")
+                        
+                        if (currentTime.isNotEmpty()) {
+                            try {
+                                currentHour = currentTime.split(":")[0].toInt()
+                                Log.d(TAG, "Using location time from API: $currentTime (hour: $currentHour)")
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Error parsing current hour from API: ${e.message}")
+                            }
+                        }
+                        
                         forecasts.add(HourlyForecastData(
-                            time = current.optString("datetime", "${currentHour}:00:00"),
+                            time = currentTime.ifEmpty { "${currentHour}:00:00" },
                             temperature = current.optDouble("temp", 0.0),
                             conditions = current.optString("conditions", "Unknown"),
                             precipProbability = current.optInt("precipprob", 0),
@@ -294,17 +419,27 @@ class WeatherApi {
                         ))
                     }
                     
-                    for (i in currentHour until hours.length()) {
+                    for (i in 0 until hours.length()) {
                         val hour = hours.getJSONObject(i)
-                        forecasts.add(HourlyForecastData(
-                            time = hour.optString("datetime", "00:00:00"),
-                            temperature = hour.optDouble("temp", 0.0),
-                            conditions = hour.optString("conditions", "Unknown"),
-                            precipProbability = hour.optInt("precipprob", 0),
-                            humidity = hour.optInt("humidity", 0),
-                            windSpeed = hour.optDouble("windspeed", 0.0),
-                            feelsLike = hour.optDouble("feelslike", 0.0)
-                        ))
+                        val hourTime = hour.optString("datetime", "00:00:00")
+                        
+                        val hourValue = try {
+                            hourTime.split(":")[0].toInt()
+                        } catch (_: Exception) {
+                            0
+                        }
+                        
+                        if (hourValue > currentHour) {
+                            forecasts.add(HourlyForecastData(
+                                time = hourTime,
+                                temperature = hour.optDouble("temp", 0.0),
+                                conditions = hour.optString("conditions", "Unknown"),
+                                precipProbability = hour.optInt("precipprob", 0),
+                                humidity = hour.optInt("humidity", 0),
+                                windSpeed = hour.optDouble("windspeed", 0.0),
+                                feelsLike = hour.optDouble("feelslike", 0.0)
+                            ))
+                        }
                     }
                 }
                 
@@ -328,7 +463,7 @@ class WeatherApi {
                 } else {
                     emptyList()
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 emptyList<String>()
             }
             
@@ -342,6 +477,82 @@ class WeatherApi {
                 return if (temp < 0) 70 else 30
             }
             return 0
+        }
+
+        @SuppressLint("NewApi")
+        private fun saveResponseDataForDebugging(jsonString: String) {
+            try {
+                val jsonObject = JSONObject(jsonString)
+                val today = jsonObject.getJSONArray("days").getJSONObject(0)
+                
+                val sb = StringBuilder()
+                sb.append("===== API RESPONSE DATA =====\n\n")
+                
+                sb.append("Location: ${jsonObject.optString("resolvedAddress")}\n")
+                sb.append("Date: ${today.optString("datetime")}\n")
+                sb.append("Unit Group: metric\n\n")
+                
+                sb.append("DAILY DATA:\n")
+                sb.append("Temperature: ${today.optDouble("temp")}°C\n")
+                sb.append("Min Temperature: ${today.optDouble("tempmin")}°C\n")
+                sb.append("Max Temperature: ${today.optDouble("tempmax")}°C\n")
+                sb.append("Feels Like: ${today.optDouble("feelslike")}°C\n")
+                sb.append("Humidity: ${today.optInt("humidity")}%\n")
+                sb.append("Wind Speed: ${today.optDouble("windspeed")} km/h\n")
+                sb.append("Wind Direction: ${today.optInt("winddir")}°\n")
+                sb.append("Visibility: ${today.optDouble("visibility")} km\n")
+                sb.append("Pressure: ${today.optDouble("pressure")} mb\n")
+                sb.append("Conditions: ${today.optString("conditions")}\n\n")
+                
+                if (jsonObject.has("currentConditions")) {
+                    val current = jsonObject.getJSONObject("currentConditions")
+                    sb.append("CURRENT CONDITIONS:\n")
+                    sb.append("Time: ${current.optString("datetime")}\n")
+                    sb.append("Temperature: ${current.optDouble("temp")}°C\n")
+                    sb.append("Feels Like: ${current.optDouble("feelslike")}°C\n")
+                    sb.append("Humidity: ${current.optInt("humidity")}%\n")
+                    sb.append("Wind Speed: ${current.optDouble("windspeed")} km/h\n")
+                    sb.append("Wind Direction: ${current.optInt("winddir")}°\n")
+                    sb.append("Visibility: ${current.optDouble("visibility")} km\n")
+                    sb.append("Pressure: ${current.optDouble("pressure")} mb\n")
+                    sb.append("Conditions: ${current.optString("conditions")}\n\n")
+                }
+                
+                if (today.has("hours")) {
+                    val hoursArray = today.getJSONArray("hours")
+                    val currentHour = LocalTime.now().hour
+                    
+                    for (i in 0 until hoursArray.length()) {
+                        val hour = hoursArray.getJSONObject(i)
+                        val hourTime = hour.optString("datetime", "00:00:00")
+                        
+                        val hourValue = try {
+                            hourTime.split(":")[0].toInt()
+                        } catch (_: Exception) {
+                            continue
+                        }
+                        
+                        if (hourValue == currentHour) {
+                            sb.append("CURRENT HOUR DATA (${hourTime}):\n")
+                            sb.append("Temperature: ${hour.optDouble("temp")}°C\n")
+                            sb.append("Feels Like: ${hour.optDouble("feelslike")}°C\n")
+                            sb.append("Humidity: ${hour.optInt("humidity")}%\n")
+                            sb.append("Wind Speed: ${hour.optDouble("windspeed")} km/h\n")
+                            sb.append("Wind Direction: ${hour.optInt("winddir")}°\n")
+                            sb.append("Visibility: ${hour.optDouble("visibility")} km\n")
+                            sb.append("Pressure: ${hour.optDouble("pressure")} mb\n")
+                            sb.append("Conditions: ${hour.optString("conditions")}\n\n")
+                            break
+                        }
+                    }
+                }
+                
+                val debugData = sb.toString()
+                Log.d(TAG, "Weather API Debug Data:\n$debugData")
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "Error saving debug data: ${e.message}")
+            }
         }
     }
 } 

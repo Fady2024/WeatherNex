@@ -51,6 +51,7 @@ class WeatherApplication : Application() {
                 Log.d("WeatherApp", "Initializing Settings")
                 Settings.init(this)
                 Log.d("WeatherApp", "Settings initialized successfully")
+                Log.d("WeatherApp", "Default settings - Temp: ${Settings.temperatureUnit}, Wind: ${Settings.windSpeedUnit}")
             } catch (e: Exception) {
                 Log.e("WeatherApp", "Error initializing Settings", e)
                 throw e
