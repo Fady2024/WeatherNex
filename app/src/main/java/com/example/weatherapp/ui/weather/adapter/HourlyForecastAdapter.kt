@@ -1,6 +1,7 @@
 package com.example.weatherapp.ui.weather.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,16 +15,67 @@ import com.example.weatherapp.util.Settings
 
 class HourlyForecastAdapter : RecyclerView.Adapter<HourlyForecastAdapter.ViewHolder>() {
     private var items = listOf<HourlyForecastData>()
+    private var textColor = Color.BLACK
+    private var isDarkBackground = false
+    private var sunriseTime: String = "06:00"
+    private var sunsetTime: String = "18:00"
     
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<HourlyForecastData>) {
         try {
             Log.d("HourlyForecastAdapter", "Submitting ${newItems.size} items")
-            items = newItems
+            
+            items = if (newItems.isNotEmpty()) {
+                val currentItem = newItems.first()
+                val currentHour = extractHourFromTime(currentItem.time)
+                val filteredList = newItems.filterIndexed { index, item -> 
+                    index == 0 || extractHourFromTime(item.time) != currentHour 
+                }
+                
+                filteredList
+            } else {
+                newItems
+            }
+            
             notifyDataSetChanged()
         } catch (e: Exception) {
             Log.e("HourlyForecastAdapter", "Error in submitList", e)
         }
+    }
+    
+    /**
+     * Update sunrise and sunset times for night mode detection
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateSunriseSunset(sunrise: String, sunset: String) {
+        this.sunriseTime = sunrise
+        this.sunsetTime = sunset
+        notifyDataSetChanged()
+    }
+    
+    /**
+     * Extracts hour from time string like "14:00:00" or "14:00"
+     */
+    private fun extractHourFromTime(timeStr: String): Int {
+        return try {
+            timeStr.split(":")[0].toInt()
+        } catch (e: Exception) {
+            Log.e("HourlyForecastAdapter", "Error parsing time: $timeStr", e)
+            -1
+        }
+    }
+    
+    /**
+     * Updates the text color for all items in the adapter based on background brightness.
+     *
+     * @param color The color to set for text elements
+     * @param isDark Whether the background is dark or not (for adjusting text shadow if needed)
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateTextColor(color: Int, isDark: Boolean) {
+        this.textColor = color
+        this.isDarkBackground = isDark
+        notifyDataSetChanged()
     }
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,7 +93,7 @@ class HourlyForecastAdapter : RecyclerView.Adapter<HourlyForecastAdapter.ViewHol
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         try {
             if (position < items.size) {
-                holder.bind(items[position])
+                holder.bind(items[position], position)
             }
         } catch (e: Exception) {
             Log.e("HourlyForecastAdapter", "Error in onBindViewHolder at position $position", e)
@@ -55,10 +107,15 @@ class HourlyForecastAdapter : RecyclerView.Adapter<HourlyForecastAdapter.ViewHol
         private val textViewHourlyTemp: TextView? = itemView.findViewById(R.id.textViewHourlyTemp)
         private val imageViewHourlyWeather: ImageView? = itemView.findViewById(R.id.imageViewHourlyWeather)
         
-        @SuppressLint("SetTextI18n")
-        fun bind(item: HourlyForecastData) {
+        @SuppressLint("SetTextI18n", "UseKtx")
+        fun bind(item: HourlyForecastData, position: Int) {
             try {
-                textViewHourlyTime?.text = formatTimeBasedOnSettings(item.time)
+                if (position == 0) {
+                    textViewHourlyTime?.text = "Now"
+                } else {
+                    textViewHourlyTime?.text = formatTimeBasedOnSettings(item.time)
+                }
+                
                 try {
                     val temperatureUnit = Settings.temperatureUnit
                     val convertedTemp = temperatureUnit.convert(item.temperature)
@@ -67,70 +124,124 @@ class HourlyForecastAdapter : RecyclerView.Adapter<HourlyForecastAdapter.ViewHol
                     textViewHourlyTemp?.text = "0°"
                     Log.e("HourlyForecastAdapter", "Error formatting hourly temperature", e)
                 }
+                
                 try {
-                    imageViewHourlyWeather?.setImageResource(getWeatherIconResource(item.conditions))
+                    val isNight = isHourAtNight(item.time)
+                    imageViewHourlyWeather?.setImageResource(getWeatherIconResource(item.conditions, isNight))
                     imageViewHourlyWeather?.alpha = 0.9f
                     imageViewHourlyWeather?.animate()?.alpha(1.0f)?.setDuration(500)?.start()
                 } catch (e: Exception) {
                     imageViewHourlyWeather?.setImageResource(R.drawable.icon_weather_sun_cloud)
                     Log.e("HourlyForecastAdapter", "Error setting hourly weather icon", e)
                 }
+                
+                textViewHourlyTime?.setTextColor(textColor)
+                textViewHourlyTemp?.setTextColor(textColor)
+                if (!isDarkBackground) {
+                    val shadowColor = Color.parseColor("#40000000")
+                    textViewHourlyTime?.setShadowLayer(1.5f, 0.5f, 0.5f, shadowColor)
+                    textViewHourlyTemp?.setShadowLayer(1.5f, 0.5f, 0.5f, shadowColor)
+                } else {
+                    textViewHourlyTime?.setShadowLayer(0f, 0f, 0f, Color.TRANSPARENT)
+                    textViewHourlyTemp?.setShadowLayer(0f, 0f, 0f, Color.TRANSPARENT)
+                }
+                
             } catch (e: Exception) {
-                Log.e("HourlyForecastAdapter", "Error binding hourly forecast item", e)
+                Log.e("HourlyForecastAdapter", "Error binding ViewHolder at position $position", e)
             }
         }
         
-        @SuppressLint("DefaultLocale")
+        /**
+         * Determines if the specified hour is during nighttime
+         */
+        private fun isHourAtNight(timeStr: String): Boolean {
+            try {
+                val hour = extractHourFromTime(timeStr)
+                val sunriseHour = extractHourFromTime(sunriseTime)
+                val sunsetHour = extractHourFromTime(sunsetTime)
+                
+                return hour < sunriseHour || hour >= sunsetHour
+            } catch (e: Exception) {
+                Log.e("HourlyForecastAdapter", "Error checking night time", e)
+                return false
+            }
+        }
+        
         private fun formatTimeBasedOnSettings(time: String): String {
             try {
                 val parts = time.split(":")
-                if (parts.size < 2) return time
-
+                if (parts.isEmpty()) return time
+                
                 val hour = parts[0].toInt()
-                val minute = parts[1].padStart(2, '0')
-
+                
                 return if (Settings.use24HourFormat) {
-                    String.format("%02d:%s", hour, minute)
+                    "${hour}:00"
                 } else {
-                    val amPm = if (hour >= 12) "PM" else "AM"
                     val hour12 = when {
                         hour == 0 -> 12
                         hour > 12 -> hour - 12
                         else -> hour
                     }
-                    String.format("%d:%s %s", hour12, minute, amPm)
+                    val amPm = if (hour >= 12) "PM" else "AM"
+                    "$hour12 $amPm"
                 }
             } catch (e: Exception) {
-                Log.e("HourlyForecastAdapter", "Error formatting time", e)
+                Log.e("HourlyForecastAdapter", "Error formatting time: $time", e)
                 return time
             }
         }
-    }
-    
-    private fun getWeatherIconResource(conditions: String): Int {
-        val conditionsLower = conditions.lowercase()
-        return when {
-            conditionsLower.contains("rain") && conditionsLower.contains("thunder") ->
-                R.drawable.icon_weather_thunderstorm_cloud
-            conditionsLower.contains("rain") && conditionsLower.contains("partly cloudy") -> 
-                R.drawable.icon_weather_sun_rain_cloud
-            conditionsLower.contains("rain") -> 
-                R.drawable.icon_weather_rain_cloud
-            conditionsLower.contains("snow") || conditionsLower.contains("flurries") || 
-            conditionsLower.contains("ice") || conditionsLower.contains("sleet") -> 
-                R.drawable.icon_weather_snow_cloud
-            conditionsLower.contains("thunder") || conditionsLower.contains("storm") ->
-                R.drawable.icon_weather_thunderstorm_cloud
-            conditionsLower.contains("fog") || conditionsLower.contains("mist") ||
-            conditionsLower.contains("haze") -> 
-                R.drawable.icon_weather_cloud_fog
-            conditionsLower.contains("partly cloudy") ->
-                R.drawable.icon_weather_sun_cloud
-            conditionsLower.contains("cloudy") || conditionsLower.contains("overcast") ->
-                R.drawable.icon_weather_cloud
-            conditionsLower.contains("clear") || conditionsLower.contains("sunny") ->
-                R.drawable.icon_weather_sun
-            else -> R.drawable.icon_weather_sun_cloud
+        
+        @SuppressLint("DefaultLocale")
+        private fun getWeatherIconResource(conditions: String, isNight: Boolean): Int {
+            val conditionsLower = conditions.lowercase()
+            
+            return when {
+                isNight -> {
+                    when {
+                        conditionsLower.contains("rain") ->
+                            R.drawable.icon_weather_moon_cloud_rain
+                        conditionsLower.contains("snow") || conditionsLower.contains("flurries") ||
+                        conditionsLower.contains("ice") || conditionsLower.contains("sleet") ->
+                            R.drawable.icon_weather_snow_cloud
+                        conditionsLower.contains("cloud") || conditionsLower.contains("overcast") ->
+                            R.drawable.icon_weather_moon_cloud
+                        conditionsLower.contains("clear") || conditionsLower.contains("sunny") ->
+                            R.drawable.icon_weather_moon
+                        conditionsLower.contains("thunder") || conditionsLower.contains("storm") ->
+                            R.drawable.icon_weather_thunderstorm_cloud
+                        conditionsLower.contains("fog") || conditionsLower.contains("mist") ||
+                        conditionsLower.contains("haze") ->
+                            R.drawable.icon_weather_cloud_fog
+                        else -> R.drawable.icon_weather_moon_cloud
+                    }
+                }
+                
+                else -> {
+                    when {
+                        conditionsLower.contains("rain") && conditionsLower.contains("thunder") ->
+                            R.drawable.icon_weather_thunderstorm_cloud
+                        conditionsLower.contains("rain") && (conditionsLower.contains("partly cloudy") || conditionsLower.contains("partly sunny")) ->
+                            R.drawable.icon_weather_sun_rain_cloud
+                        conditionsLower.contains("rain") ->
+                            R.drawable.icon_weather_rain_cloud
+                        conditionsLower.contains("snow") || conditionsLower.contains("flurries") ||
+                        conditionsLower.contains("ice") || conditionsLower.contains("sleet") -> 
+                            R.drawable.icon_weather_snow_cloud
+                        conditionsLower.contains("fog") || conditionsLower.contains("mist") ||
+                        conditionsLower.contains("haze") -> 
+                            R.drawable.icon_weather_cloud_fog
+                        conditionsLower.contains("partly cloudy") || conditionsLower.contains("partly sunny") ->
+                            R.drawable.icon_weather_sun_cloud
+                        conditionsLower.contains("cloud") || conditionsLower.contains("overcast") ->
+                            R.drawable.icon_weather_cloud
+                        conditionsLower.contains("sunny") || conditionsLower.contains("clear") ->
+                            R.drawable.icon_weather_sun
+                        conditionsLower.contains("thunder") || conditionsLower.contains("storm") ->
+                            R.drawable.icon_weather_thunderstorm_cloud
+                        else -> R.drawable.icon_weather_sun_cloud
+                    }
+                }
+            }
         }
     }
 } 
