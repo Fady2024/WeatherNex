@@ -2,11 +2,12 @@ package com.example.weatherapp.ui.settings
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +25,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.View {
     private lateinit var textWindSpeedUnit: TextView
     private lateinit var textPressureUnit: TextView
     private lateinit var textTimeFormat: TextView
+    private lateinit var textLengthUnit: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,7 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.View {
         textWindSpeedUnit = findViewById(R.id.textWindSpeedUnit)
         textPressureUnit = findViewById(R.id.textPressureUnit)
         textTimeFormat = findViewById(R.id.textTimeFormat)
+        textLengthUnit = findViewById(R.id.textLengthUnit)
     }
 
     private fun setupListeners() {
@@ -82,16 +85,18 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.View {
     }
 
     fun onPressureUnitClick(view: View) {
-        val options = arrayOf("atm", "hPa", "inHg")
+        val options = arrayOf("mb", "hPa", "atm", "mmHg", "inHg")
         val currentUnit = textPressureUnit.text.toString()
         val initialSelection = options.indexOf(currentUnit)
         
         showAnimatedDropdown(view, options, initialSelection) { index ->
             val unit = when (index) {
-                0 -> Settings.PressureUnit.ATM
+                0 -> Settings.PressureUnit.MB
                 1 -> Settings.PressureUnit.HPA
-                2 -> Settings.PressureUnit.INHG
-                else -> Settings.PressureUnit.ATM
+                2 -> Settings.PressureUnit.ATM
+                3 -> Settings.PressureUnit.MMHG
+                4 -> Settings.PressureUnit.INHG
+                else -> Settings.PressureUnit.MB
             }
             presenter.setPressureUnit(unit)
             Toast.makeText(this, "Pressure unit changed to ${options[index]}", Toast.LENGTH_SHORT).show()
@@ -109,6 +114,25 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.View {
         }
     }
 
+    fun onLengthUnitClick(view: View) {
+        val options = arrayOf("mm", "cm", "m", "in", "ft")
+        val currentUnit = textLengthUnit.text.toString()
+        val initialSelection = options.indexOf(currentUnit)
+        
+        showAnimatedDropdown(view, options, initialSelection) { index ->
+            val unit = when (index) {
+                0 -> Settings.LengthUnit.MM
+                1 -> Settings.LengthUnit.CM
+                2 -> Settings.LengthUnit.M
+                3 -> Settings.LengthUnit.INCH
+                4 -> Settings.LengthUnit.FEET
+                else -> Settings.LengthUnit.CM
+            }
+            presenter.setLengthUnit(unit)
+            Toast.makeText(this, "Length unit changed to ${options[index]}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     @SuppressLint("UseKtx", "InflateParams")
     private fun showAnimatedDropdown(anchor: View, options: Array<String>, initialSelection: Int, onItemSelected: (Int) -> Unit) {
         val menuView = layoutInflater.inflate(R.layout.dropdown_menu, null)
@@ -117,56 +141,81 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.View {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             true
-        )
+        ).apply {
+            setBackgroundDrawable(null)
+            isOutsideTouchable = true
+        }
 
-        val option1 = menuView.findViewById<TextView>(R.id.option1)
-        val option2 = menuView.findViewById<TextView>(R.id.option2)
+        val container = menuView.findViewById<ViewGroup>(R.id.optionContainer)
+        container.removeAllViews()
         
-        option1.text = options[0]
-        option2.text = options[1]
-
+        val optionViews = mutableListOf<TextView>()
+        
         val valueText = when (anchor.id) {
-            R.id.temperatureUnitSelector -> anchor.findViewById<TextView>(R.id.textTemperatureUnit)
-            R.id.windSpeedUnitSelector -> anchor.findViewById<TextView>(R.id.textWindSpeedUnit)
-            R.id.pressureUnitSelector -> anchor.findViewById<TextView>(R.id.textPressureUnit)
-            else -> anchor.findViewById<TextView>(R.id.textTimeFormat)
+            R.id.temperatureUnitSelector -> findViewById<TextView>(R.id.textTemperatureUnit)
+            R.id.windSpeedUnitSelector -> findViewById<TextView>(R.id.textWindSpeedUnit)
+            R.id.pressureUnitSelector -> findViewById<TextView>(R.id.textPressureUnit)
+            R.id.timeFormatSelector -> findViewById<TextView>(R.id.textTimeFormat)
+            R.id.lengthUnitSelector -> findViewById<TextView>(R.id.textLengthUnit)
+            else -> findViewById<TextView>(R.id.textTimeFormat)
         }
-
-        val selectedTextColor = valueText?.currentTextColor ?: ContextCompat.getColor(this, android.R.color.black)
-        val normalTextColor = Color.parseColor("#757575")
         
-        option1.setTextColor(if (initialSelection == 0) selectedTextColor else normalTextColor)
-        option2.setTextColor(if (initialSelection == 1) selectedTextColor else normalTextColor)
-
-        option1.setOnClickListener {
-            onItemSelected(0)
-            popupWindow.dismiss()
-        }
-        option2.setOnClickListener {
-            onItemSelected(1)
-            popupWindow.dismiss()
+        container.setPadding(8, 4, 8, 4)
+        
+        for (i in options.indices) {
+            val optionView = layoutInflater.inflate(R.layout.dropdown_option_item, container, false) as TextView
+            optionView.apply {
+                text = options[i]
+                id = View.generateViewId()
+                textSize = 16f
+                setPadding(16, 12, 16, 12)
+                minWidth = 120
+                gravity = android.view.Gravity.CENTER
+                
+                val selectedTextColor = valueText?.currentTextColor ?: ContextCompat.getColor(this@SettingsActivity, android.R.color.black)
+                val normalTextColor = Color.parseColor("#757575")
+                
+                setTextColor(if (i == initialSelection) selectedTextColor else normalTextColor)
+                
+                if (i == initialSelection) {
+                    typeface = Typeface.DEFAULT_BOLD
+                }
+                
+                setOnClickListener {
+                    onItemSelected(i)
+                    popupWindow.dismiss()
+                }
+            }
+            
+            if (i > 0) {
+                val divider = View(this).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        1
+                    ).apply {
+                        setMargins(8, 0, 8, 0)
+                    }
+                    setBackgroundColor(Color.parseColor("#E0E0E0"))
+                }
+                container.addView(divider)
+            }
+            
+            container.addView(optionView)
+            optionViews.add(optionView)
         }
 
         popupWindow.animationStyle = R.style.DropdownAnimation
 
-        try {
-            val paint = Paint()
-            paint.textSize = option1.textSize
-            
-            val option1Width = paint.measureText(options[0])
-            val option2Width = paint.measureText(options[1])
-            val maxOptionWidth = maxOf(option1Width, option2Width)
-            val totalWidth = (maxOptionWidth + 48).toInt()
-            val minWidth = (valueText?.width ?: 0) + 48
-            val finalWidth = maxOf(totalWidth, minWidth)
-            popupWindow.width = finalWidth
-            val xOffset = valueText?.left ?: 0
-            popupWindow.showAsDropDown(anchor, xOffset, 0)
-            
-        } catch (_: Exception) {
-            popupWindow.width = ViewGroup.LayoutParams.WRAP_CONTENT
-            popupWindow.showAsDropDown(anchor)
-        }
+        val location = IntArray(2)
+        valueText?.getLocationInWindow(location)
+        
+        val dropdownWidth = (valueText?.width ?: 120) + 120
+        popupWindow.width = dropdownWidth
+
+        val xOffset = (anchor.width - dropdownWidth)
+        
+        val yOffset = 16
+        popupWindow.showAsDropDown(anchor, xOffset, yOffset)
     }
 
     override fun updateTemperatureUnit(unit: Settings.TemperatureUnit) {
@@ -186,14 +235,26 @@ class SettingsActivity : AppCompatActivity(), SettingsContract.View {
 
     override fun updatePressureUnit(unit: Settings.PressureUnit) {
         textPressureUnit.text = when (unit) {
-            Settings.PressureUnit.ATM -> "atm"
+            Settings.PressureUnit.MB -> "mb"
             Settings.PressureUnit.HPA -> "hPa"
+            Settings.PressureUnit.ATM -> "atm"
+            Settings.PressureUnit.MMHG -> "mmHg"
             Settings.PressureUnit.INHG -> "inHg"
         }
     }
     
     override fun updateTimeFormat(use24Hour: Boolean) {
         textTimeFormat.text = if (use24Hour) "24-hour" else "12-hour"
+    }
+
+    override fun updateLengthUnit(unit: Settings.LengthUnit) {
+        textLengthUnit.text = when (unit) {
+            Settings.LengthUnit.MM -> "mm"
+            Settings.LengthUnit.CM -> "cm"
+            Settings.LengthUnit.M -> "m"
+            Settings.LengthUnit.INCH -> "in"
+            Settings.LengthUnit.FEET -> "ft"
+        }
     }
 
     override fun showLoading() {

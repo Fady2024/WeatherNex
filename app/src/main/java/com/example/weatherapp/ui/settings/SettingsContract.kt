@@ -9,6 +9,7 @@ interface SettingsContract {
         fun updateTemperatureUnit(unit: Settings.TemperatureUnit)
         fun updateWindSpeedUnit(unit: Settings.WindSpeedUnit)
         fun updatePressureUnit(unit: Settings.PressureUnit)
+        fun updateLengthUnit(unit: Settings.LengthUnit)
         fun updateTimeFormat(use24Hour: Boolean)
     }
 
@@ -16,6 +17,7 @@ interface SettingsContract {
         fun setTemperatureUnit(unit: Settings.TemperatureUnit)
         fun setWindSpeedUnit(unit: Settings.WindSpeedUnit)
         fun setPressureUnit(unit: Settings.PressureUnit)
+        fun setLengthUnit(unit: Settings.LengthUnit)
         fun setTimeFormat(use24Hour: Boolean)
     }
 } 

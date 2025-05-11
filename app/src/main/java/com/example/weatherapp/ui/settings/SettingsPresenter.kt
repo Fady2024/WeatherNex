@@ -10,6 +10,7 @@ class SettingsPresenter : SettingsContract.Presenter {
         view.updateTemperatureUnit(Settings.temperatureUnit)
         view.updateWindSpeedUnit(Settings.windSpeedUnit)
         view.updatePressureUnit(Settings.pressureUnit)
+        view.updateLengthUnit(Settings.lengthUnit)
         view.updateTimeFormat(Settings.use24HourFormat)
     }
 
@@ -20,22 +21,27 @@ class SettingsPresenter : SettingsContract.Presenter {
     override fun isViewAttached(): Boolean = view != null
 
     override fun setTemperatureUnit(unit: Settings.TemperatureUnit) {
-        Settings.temperatureUnit = unit
+        Settings.setTemperatureUnit(unit)
         view?.updateTemperatureUnit(unit)
     }
 
     override fun setWindSpeedUnit(unit: Settings.WindSpeedUnit) {
-        Settings.windSpeedUnit = unit
+        Settings.setWindSpeedUnit(unit)
         view?.updateWindSpeedUnit(unit)
     }
 
     override fun setPressureUnit(unit: Settings.PressureUnit) {
-        Settings.pressureUnit = unit
+        Settings.setPressureUnit(unit)
         view?.updatePressureUnit(unit)
     }
     
+    override fun setLengthUnit(unit: Settings.LengthUnit) {
+        Settings.setLengthUnit(unit)
+        view?.updateLengthUnit(unit)
+    }
+    
     override fun setTimeFormat(use24Hour: Boolean) {
-        Settings.use24HourFormat = use24Hour
+        Settings.setUse24HourFormat(use24Hour)
         view?.updateTimeFormat(use24Hour)
     }
 } 
